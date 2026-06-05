@@ -9,3 +9,6 @@ package-lock.json
 # os
 .DS_Store
 Thumbs.db
+
+# committed brand assets (override the *.png rule above)
+!assets/*.png
