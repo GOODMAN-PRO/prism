@@ -2,6 +2,9 @@
 
 **The unified design-engineering skill for building award-grade, immersive websites and web interfaces — for [Claude Code](https://docs.claude.com/en/docs/claude-code) and Claude agents.**
 
+### ▶ Live demo — [the style atlas](https://goodman-pro.github.io/prism/examples/style-atlas/)
+One component rendered in **twenty** design languages, with a real working seek bar → **https://goodman-pro.github.io/prism/examples/style-atlas/**
+
 prism is a single skill that gives Claude the *taste* and the *technique* to design and build premium frontends — and then a real browser harness to **prove** the build works. It's the single source of truth for UI, visual design, motion, and immersive 3D, and it supersedes scattered "make it pretty" prompting.
 
 Stack it targets: **React + React Three Fiber + Three.js + GSAP + Lenis + Motion + GLSL.**
@@ -19,7 +22,7 @@ Most "design" prompts produce the same AI-default look — Inter/Space-Grotesk, 
 
 > A clean console is not a good-looking page. prism finds the *technical* faults; you still read the screenshots.
 
-**See it:** open [`examples/style-atlas/index.html`](./examples/style-atlas/index.html) — the same "now playing" card rendered in **twenty** design languages (Minimalism · Glassmorphism · Liquid Glass · Neo-Brutalism · Claymorphism · Skeuomorphism · Neumorphism · Aurora · Terminal · Synthwave · Material · Cyberpunk · Swiss · Bauhaus · Memphis · Frutiger Aero · Editorial · Maximalism · Acid · Spatial), with a real working seek bar. One skeleton, twenty souls.
+**See it live:** [▶ the style atlas →](https://goodman-pro.github.io/prism/examples/style-atlas/) · [source](./examples/style-atlas/) — the same "now playing" card rendered in **twenty** design languages (Minimalism · Glassmorphism · Liquid Glass · Neo-Brutalism · Claymorphism · Skeuomorphism · Neumorphism · Aurora · Terminal · Synthwave · Material · Cyberpunk · Swiss · Bauhaus · Memphis · Frutiger Aero · Editorial · Maximalism · Acid · Spatial), with a real working seek bar. One skeleton, twenty souls.
 
 ---
 
