@@ -106,7 +106,7 @@ You're shipping these to a paying client. Only use what's cleared for **commerci
 | [Motion Primitives](https://motion-primitives.com) | Motion-based animated primitives | MIT | ✅ | shadcn CLI |
 | [Kibo UI](https://www.kibo-ui.com) | Higher-order shadcn (AI chat, kanban, gantt) | MIT | ✅ | `@kibo-ui/<c>` |
 | [Kokonut UI](https://www.kokonutui.com) | 100+ creative Tailwind/shadcn blocks | MIT | ✅ | `@kokonutui/<c>` |
-| [Skiper UI](https://skiper-ui.com) | "Un-common" animated Next.js | free = **credit required**; Pro = none | 🟡 Credit | `@skiper-ui/<c>` |
+| [Skiper UI](https://skiper-ui.com) | "Un-common" animated React/Motion blocks — card carousels, marquees, AI chat input, theme toggles | free 24+ = **credit required**; Pro $129 one-time = no credit, ~100 more | 🟡 Credit | `@skiper-ui/<c>` |
 | [Tremor](https://tremor.so) | Best-in-class dashboard/data-viz | Apache-2.0 | ✅ | npm |
 | [Hover.dev](https://www.hover.dev) | High-polish animated sections/templates | proprietary freemium | ✅ | Free subset; paid Pro; don't redistribute |
 | [Animate UI](https://animate-ui.com) · [Eldora](https://www.eldoraui.site) · [Fancy](https://fancycomponents.dev) · [Animata](https://animata.design) | More MIT animated sets | MIT | ✅ | shadcn CLI / copy |
