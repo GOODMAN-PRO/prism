@@ -23,7 +23,7 @@ import { lazy, Suspense } from "react";
 const HeroScene = lazy(() => import("./HeroScene"));   // separate chunk
 
 <div className="relative aspect-[16/9]">             {/* reserve space → no CLS */}
-  <img src="/hero-poster.webp" alt="" className="absolute inset-0 h-full w-full object-cover" />
+  <img src="/hero-poster.webp" alt="" fetchpriority="high" decoding="async" width="1920" height="1080" className="absolute inset-0 h-full w-full object-cover" />
   <Suspense fallback={null}>
     <HeroScene />                                      {/* overlays/replaces the poster when ready */}
   </Suspense>
@@ -31,7 +31,8 @@ const HeroScene = lazy(() => import("./HeroScene"));   // separate chunk
 ```
 
 - **Next.js:** `dynamic(() => import("./HeroScene"), { ssr: false })` — WebGL can't render on the server.
-- **Defer until in view / past LCP:** mount the scene on `IntersectionObserver` (when the hero nears the viewport) or after `requestIdleCallback` / first interaction, not on initial hydration.
+- **Defer until in view / past LCP:** mount the scene on `IntersectionObserver` (when the hero nears the viewport — the primary trigger) or after `requestIdleCallback` (shim with `setTimeout(fn, 200)` for Safari) / first interaction, not on initial hydration.
+- The **poster is the LCP element** — give it `fetchpriority="high"` (never `loading="lazy"`), and a `<link rel="preload" as="image">` if it is not discoverable in the initial HTML.
 - The **poster is also the no-WebGL and reduced-motion fallback** — one asset, three jobs.
 
 ## 3. Draw calls — the master 3D metric
@@ -45,7 +46,7 @@ Each unique geometry+material = one draw call; hundreds tank frame rate. Reduce 
 
 ## 4. LOD, culling, adaptive frameloop
 
-- **LOD:** swap detail by camera distance with drei `<Detail>` (inside `<Lod>`)/`THREE.LOD` — high-poly up close, low-poly far. Essential for large scenes.
+- **LOD:** swap detail by camera distance with drei `<Detailed distances={[0, 12, 30]}>` (wraps `THREE.LOD`; children ordered high→low poly, one distance per child) — high-poly up close, low-poly far. Essential for large scenes.
 - **Frustum culling** is on by default; don't disable it. Keep bounding volumes correct so off-screen objects aren't drawn.
 - **`frameloop="demand"`** for non-continuous scenes — render only on `invalidate()`. A static product viewer should not run 60fps forever.
 - **Clamp DPR:** `dpr={[1, 2]}` — retina at raw `devicePixelRatio` (often 3) renders ~9× the pixels of DPR 1. Cap at 2, lower on weak GPUs.
@@ -72,7 +73,8 @@ Each unique geometry+material = one draw call; hundreds tank frame rate. Reduce 
 
 - Animate **only `transform` and `opacity`** — GPU, effectively unlimited. `color`/`clip-path` ≤10–15 elements. **<20 animated elements per viewport.**
 - **60fps = 16.67ms/frame; keep animation logic <10ms/frame.** Never animate layout properties.
-- Continuous values (scroll, pointer) via `useMotionValue`/`useFrame`, never `useState`. Motion's `x`/`y`/`scale` shorthands aren't GPU-accelerated under load — use the full `transform` string.
+- **Break long tasks to protect INP.** When an interaction kicks off heavy work (filtering, scene init, hydration), yield: `await scheduler.yield()` (where supported) or chunk with `await new Promise(r => setTimeout(r))`; gate non-urgent setup behind `requestIdleCallback`. Yielding lets the next paint run, which is what INP measures.
+- Continuous values (scroll, pointer) via `useMotionValue`/`useFrame`, never `useState`. Motion's `x`/`y`/`scale`/`rotate`/`opacity` shorthands **are** hardware-composited and skip layout — prefer them. Avoid driving layout props (`width`, `top`, `margin`) or layout animations on hot paths; use transform-based moves and FLIP only when measured.
 
 ## 9. Measure, don't guess
 

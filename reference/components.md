@@ -39,19 +39,19 @@ Best-in-class patterns for the components every site needs. Each entry: the disc
 
 **Rules:** cards only when elevation communicates real hierarchy — otherwise group with `border-t`/`divide-y`/space. Nested cards never. One radius scale. Tint shadows to bg hue. Pin CTAs to the card bottom so they align across a row; align titles/prices/descriptions on a shared baseline.
 
-- **Double-bezel** (premium hardware feel, Soft Structural / Ethereal Glass): outer shell `bg-white/5 ring-1 ring-black/5 p-1.5 rounded-[2rem]` → inner core with its own bg, inner highlight `shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]`, concentric radius `rounded-[calc(2rem-0.375rem)]`.
+- **Double-bezel** (premium hardware feel, Soft Structural / Ethereal Glass): outer shell `bg-white/5` + a theme-aware hairline (the hairline must read against the surface — light ring on dark, dark ring on light: `ring-1 ring-white/10` on dark + the inset highlight, reserve `ring-black/5` for light themes) `p-1.5 rounded-[2rem]` → inner core with its own bg, inner highlight `shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]`, concentric radius `rounded-[calc(2rem-0.375rem)]`.
 - **Spotlight border** on hover (cursor-tracked radial highlight) for dark themes — drive with a motion value, gate behind `(hover:hover)`.
 
 ## Forms
 
-**Rules:** label **above** input; helper optional (present in markup); error **below**; `gap-2` blocks. **No placeholder-as-label, ever.** Focus ring in accent (3:1 contrast). Verify placeholder contrast (4.5:1 — not muted gray). Inline errors, never `alert()`. Validate on blur + submit. Button labels = verb + object ("Create account", not "Submit").
+**Rules:** label **above** input; helper optional (present in markup); error **below**; `gap-2` blocks. **No placeholder-as-label, ever.** Focus ring in accent (3:1 contrast). Verify placeholder contrast (4.5:1 — not muted gray). Inline errors, never `alert()`. Validate on blur + submit. Wire `aria-describedby` only while an error exists (mount the `<p>` only then — no `empty:hidden` placeholder). Button labels = verb + object ("Create account", not "Submit").
 
 ```jsx
 <div className="flex flex-col gap-2">
   <label htmlFor="email" className="text-sm font-medium">Email</label>
-  <input id="email" type="email" aria-describedby="email-err"
-    className="rounded-lg border px-3 py-2 focus-visible:ring-2 focus-visible:ring-[--accent] outline-none" />
-  <p id="email-err" role="alert" className="text-sm text-red-600 empty:hidden" />
+  <input id="email" type="email" aria-describedby={error ? "email-err" : undefined}
+    className="rounded-lg border px-3 py-2 focus-visible:ring-2 focus-visible:ring-[var(--accent)] outline-none" />
+  {error && <p id="email-err" role="alert" className="text-sm text-red-600">{error}</p>}
 </div>
 ```
 
@@ -61,7 +61,7 @@ Best-in-class patterns for the components every site needs. Each entry: the disc
 
 ## Marquee
 
-**Rules:** **≤1 per page.** For logos / "lots of things that don't need individual attention." Real SVG logos (Simple Icons), not text wordmarks; logo-only (no category labels). Pause on hover; duplicate the track for a seamless loop; `linear` easing.
+**Rules:** **≤1 per page.** For logos / "lots of things that don't need individual attention." Real SVG logos (Simple Icons), not text wordmarks; logo-only (no category labels). Pause on hover; duplicate the track for a seamless loop; `linear` easing. Gate behind `prefers-reduced-motion`: under reduce, freeze the track (`animation-play-state: paused`) — never auto-scroll. Pause when off-screen (IntersectionObserver) to save the main thread.
 
 ## Pricing
 
@@ -73,7 +73,7 @@ Best-in-class patterns for the components every site needs. Each entry: the disc
 
 ## Accordion (FAQ)
 
-**Rules:** strip container boxes — separate items with `border-bottom` only; sharp `+`/`−` toggle; animate height with opacity (trial-and-error the pairing); content visible by default for SEO/headless (don't gate visibility on a class-triggered transition). Radix/shadcn Accordion for accessible keyboard + `aria-expanded`.
+**Rules:** strip container boxes — separate items with `border-bottom` only; sharp `+`/`−` toggle; animate open/close with `grid-template-rows: 0fr → 1fr` on a wrapper (GPU-friendly, no fixed pixel height) + opacity on the inner content, transition ~0.25–0.3s ease — never transition `height:auto`; content visible by default for SEO/headless (don't gate visibility on a class-triggered transition). Radix/shadcn Accordion for accessible keyboard + `aria-expanded`.
 
 ## Footer
 
@@ -90,4 +90,4 @@ Best-in-class patterns for the components every site needs. Each entry: the disc
 | Accessible base primitives you'll restyle (dialog, accordion, dropdown, tabs) | **shadcn/ui** (`npx shadcn add` → owns the source; Radix under the hood) |
 | Anything bespoke | Build it here against `foundations.md` + `motion.md` |
 
-One component system per project. Don't mix Material into a shadcn tree. Verify every import against `package.json` first.
+Re-skin, never paste-and-ship — bank components (React Bits / Aceternity / shadcn) carry recognizable AI styling; restyle to the locked system (`foundations.md`) before it counts as yours. One component system per project. Don't mix Material into a shadcn tree. Verify every import against `package.json` first.

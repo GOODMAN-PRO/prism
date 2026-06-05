@@ -34,9 +34,13 @@ So the immersive layer is a multiplier on a sound interface, never a substitute 
 
 5. **Architect.** Plan the page as distinct layout families — **no family repeats**, max 2 zigzags in a row, bento has exactly N cells for N items. Map sections to the component taxonomy (→ `reference/components.md`).
 
-6. **Build.** Production React. Every component using motion, scroll, pointer physics, or WebGL is an isolated `'use client'` leaf. The WebGL canvas is **always code-split and lazy-mounted** (→ `reference/performance.md`). Motion follows the decision framework and timing tables (→ `reference/motion.md`). 3D follows `reference/immersive-3d.md`.
+6. **Build.** Production React. Every component using motion, scroll, pointer physics, or WebGL is an isolated `'use client'` leaf. The WebGL canvas is **always code-split and lazy-mounted** (→ `reference/performance.md`). Motion follows the decision framework and timing tables (→ `reference/motion.md`). 3D follows `reference/immersive-3d.md`. Source assets (3D, HDRIs, textures, components, icons, fonts, stock) from `reference/resources.md` — and for paid/client work ship only **commercial-cleared** licenses (its Comm. column). **Build to the production-grade gate, not to "it renders":** every interactive element actually *works* (no fake/decorative components — a slider seeks, a form validates, a link smooth-scrolls), carries the full state matrix (`:hover :active :focus-visible :disabled` + empty/loading/error), and its micro-interactions have **zero layout shift** and snappy, task-appropriate press feedback (→ `reference/craft.md`).
 
-7. **Preflight.** Before declaring done, **drive the build through the verifier** — `node <this-skill-dir>/driver.mjs <url-or-dir>` — which sweeps horizontal overflow at 5 widths, captures console/page errors, and screenshots desktop + mobile + **every GSAP pin (the stop-and-read beats)** + reduced-motion, then prints PASS/FAIL. **Then READ the screenshots it saves** — a green console is not a good-looking page (→ `reference/verify.md`). Finally run `reference/preflight.md` top to bottom. Never ask the user to check what you can check yourself.
+7. **Self-audit, then verify (the ship gate).** Be your own senior reviewer — adversarially, in this order (→ `reference/craft.md` Part 3):
+   - **Slop pass.** Thumbnail test, font-only test, the "who" test. Default to *fail* and make the design earn the pass — could anyone tell an AI made this?
+   - **Works pass.** Click / tab / scroll **every** interactive thing. Does it do what it implies? Any layout shift on a state change? Keyboard-operable with a visible focus ring? Reduced-motion honored?
+   - **Pixels pass.** **Drive the build through the verifier** — `node <this-skill-dir>/driver.mjs <url-or-dir>` — which sweeps horizontal overflow at 5 widths, captures console/page errors, and screenshots desktop + mobile + **every GSAP pin (the stop-and-read beats)** + reduced-motion, then prints PASS/FAIL. **Then READ the screenshots it saves and judge them with your eyes** — PASS means no overflow/errors, *not* that it looks good (→ `reference/verify.md`).
+   - Finally run `reference/preflight.md` top to bottom. Never ask the user to check what you can check yourself.
 
 ---
 
@@ -74,27 +78,27 @@ npm i ogl                              # optional: lightweight shader background
 - **Motion library:** `motion` (the rebranded Framer Motion). Import from `motion/react`. `framer-motion` still works as a legacy alias; prefer `motion/react` in new code.
 - **Smooth scroll:** `lenis` — the spine that GSAP ScrollTrigger and scroll-driven 3D ride on.
 - **Continuous values** (scroll progress, pointer, magnetic hover) use `useMotionValue` / `useScroll` / `useFrame` — **never** `useState`; it re-renders the tree every frame and collapses on mobile.
-- **Component pattern banks** (treat as *taxonomy and source to copy*, not stack mandates): **React Bits** (130+ components on this exact R3F + drei + postprocessing + GSAP + ogl + motion stack — the closest match), **Aceternity UI** (named patterns: Resizable Navbar, Hero Parallax, Bento Grid, Animated Modal, 3D Marquee, Infinite Moving Cards), **shadcn/ui** (`npx shadcn@latest add` copies source into the project — controllable base primitives; still pulls Radix via npm).
+- **Component pattern banks** (treat as *taxonomy and source to copy*, not stack mandates): **React Bits** (130+ components on this exact R3F + drei + postprocessing + GSAP + ogl + motion stack — the closest match), **Aceternity UI** (named patterns: Resizable Navbar, Hero Parallax, Bento Grid, Animated Modal, 3D Marquee, Infinite Moving Cards), **shadcn/ui** (`npx shadcn@latest add` copies source into the project — controllable base primitives; still pulls Radix via npm). Copy these as structure/mechanics to RE-SKIN, never paste-and-ship — their stock styling (e.g. Aceternity hero-parallax, moving-cards) is itself a recognizable AI tell; restyle to the locked system before it counts as yours.
 
 ---
 
 ## Core laws (condensed — depth in the references)
 
-These are the deduplicated non-negotiables. The full bans and rationale live in `reference/foundations.md` and `reference/motion.md`.
+These are the deduplicated non-negotiables. The full bans and rationale live in `reference/foundations.md` and `reference/motion.md` — and the bar that governs all of them, the line between AI-slop, looks-fine demo-ware, and shippable production craft, is `reference/craft.md`. Read it before you call anything done.
 
-**Anti-slop.** If someone could say "AI made that," it failed. No Inter-by-default (use Geist / Satoshi / Cabinet Grotesk / Clash / PP Editorial). No AI purple-blue gradient glow. No pure `#000`. No emojis in UI. No three-identical-card row. No eyebrow above every section (≤1 per 3). No fake-precise numbers. No "Elevate / Seamless / Unleash / Next-Gen / Delve." No Lucide-by-default (Phosphor / Tabler / Radix). No div "fake screenshots." No gradient-clip text. No ghost-card (1px border + big soft shadow). No `h-screen` (use `min-h-[100dvh]`).
+**Anti-slop.** If someone could say "AI made that," it failed. No Inter/Geist/Space Grotesk by default — they are the AI-default tell; choose a display face with a point of view (font-only test: strip color + layout, does the type alone read as THIS brand?), sourced intentionally from `reference/resources.md` and never reused across builds. Inter/Geist are permitted ONLY as a deliberate neutral workhorse *under* a distinctive display face, or for Linear-clean / accessibility-first briefs — never the identity (Geist Mono is fine in mono roles). No AI purple-blue gradient glow. No pure `#000`. No emojis in UI. No three-identical-card row. No eyebrow above every section (≤1 per 3). No fake-precise numbers. No "Elevate / Seamless / Unleash / Next-Gen / Delve." No Lucide-by-default (Phosphor / Tabler / Radix). No div "fake screenshots." No gradient-clip text. No ghost-card (1px border + big soft shadow). No `h-screen` (use `min-h-[100dvh]`).
 
 **Type.** Premium display family; scale ratio ≥1.25; body 65–75ch; display letter-spacing floor −0.04em; hero `clamp()` max ~6rem; `text-wrap: balance` on h1–h3; headline ≤2–3 lines (a 4-line hero is a font-size error).
 
-**Color.** OKLCH. One accent, saturation <80%. One gray family. Tint shadows to the background hue. **Verify contrast** on every text, button, and placeholder: WCAG AA 4.5:1 body / 3:1 large.
+**Color.** OKLCH. One accent, saturation <80%. One gray family. Tint shadows to the background hue. **Verify contrast** on every text, button, and placeholder: WCAG AA 4.5:1 body / 3:1 large. If both light + dark ship, define them as ONE semantic-token system (not two hardcoded palettes); dark mode is near-black tinted to the brand hue (never `#000`), elevation by lightness not glow, and contrast AA is re-verified in BOTH modes.
 
-**Layout.** Asymmetry over centered when `VARIANCE > 4`. Macro whitespace (`py-24`→`py-40`). Grid for 2D, flex for 1D — never `calc()` percentage math. Max-width container ~1400px. Cards only when elevation means hierarchy; nested cards never.
+**Layout.** Asymmetry over centered when `VARIANCE > 4`. Macro whitespace (`py-24`→`py-40`). Grid for 2D, flex for 1D — never `calc()` percentage math. Max-width container ~1400px. Cards only when elevation means hierarchy; nested cards never. Design mobile (360px) as a first-class layout, not a reflow afterthought — no horizontal overflow at 360/768/1024/1440/1920, clip decor with `overflow:clip`, fluid `clamp()` type, 44px targets; the asymmetric desktop grid must resolve to an intentional small-screen order, never a default centered stack.
 
 **Motion.** Custom cubic-bezier, never `linear`/`ease-in-out` as a default. Enter `ease-out`, exit `ease-in` at **65–75% of the enter duration**. Animate **only `transform` and `opacity`** (GPU); ≤~20 animated elements per viewport; logic <10ms/frame. Springs for natural/interruptible motion. Never animate from `scale(0)` — start `scale(0.95)` + opacity. Motion must be *motivated* (hierarchy, feedback, continuity, explanation) — never "it looked cool." Marquee ≤1/page.
 
-**Accessibility & states.** `prefers-reduced-motion` is a *transformation*, not a switch: strip movement, keep opacity, kill loops, halve durations, pause scroll-3D/parallax. Always ship loading (skeleton), empty (composed), and error (inline) states. `:active` → `scale(0.97)`. Visible focus rings. 44px touch targets.
+**Accessibility & states.** `prefers-reduced-motion` is a *transformation*, not a switch: strip movement, keep opacity, kill loops, halve durations, pause scroll-3D/parallax. Always ship loading (skeleton), empty (composed), and error (inline) states. `:active` → `scale(0.97)` over ~0.12s with `var(--ease-out)` (snappy, never bouncy; a deeper dip + spring-on-release only for explicitly playful briefs). Visible focus rings. 44px touch targets.
 
-**Assets.** Real images (generate, or `picsum.photos/seed/<descriptive>/w/h`). Real SVG logos (Simple Icons). Never hand-drawn sketchy SVG as a fallback.
+**Assets.** Real, art-directed, content-true images — generate them. `picsum.photos/seed/<descriptive>/w/h` is a LAST-RESORT layout placeholder only (never the hero, never in a client deliverable); keep seeds consistent so the set reads intentional. Real SVG logos (Simple Icons). Never hand-drawn sketchy SVG as a fallback.
 
 ---
 
@@ -104,6 +108,7 @@ Load only what the task needs.
 
 | File | When to read it |
 |---|---|
+| `reference/craft.md` | **The quality spine — read on every build and before every "done."** The line between AI-slop, looks-fine demo-ware, and shippable production craft: the anti-slop bible (default tells + antidotes), the production-grade gate (components that actually work, the state matrix, micro-interaction physics, a11y, no-CLS, the optical 1%), and the self-audit you run on your own output. |
 | `reference/foundations.md` | Typography scale, OKLCH color, spacing grid, layout, hierarchy, the full anti-slop ban list. Read for any new visual system. |
 | `reference/components.md` | Building specific UI: nav, hero, bento, cards, forms, modals, marquee, footer, pricing, testimonials, accordion. Code per component. |
 | `reference/motion.md` | Any animation. Emil decision framework, duration/easing tables, GSAP ScrollTrigger skeletons, Lenis, Motion, springs, page/view transitions, reduced-motion. |
@@ -113,6 +118,7 @@ Load only what the task needs.
 | `reference/redesign.md` | Existing project. Audit → diagnose → fix flow, fix-priority order, strategic omissions. |
 | `reference/preflight.md` | Before shipping anything. The merged pre-flight checklist. Mandatory. |
 | `reference/verify.md` | The committed browser driver (`driver.mjs`): launch a build, sweep overflow, capture errors + GSAP pins + mobile + reduced-motion, screenshot. Prism's verify harness — run it every preflight. |
+| `reference/resources.md` | Sourcing **any** asset — 3D models, HDRIs, textures, components (21st.dev + the shadcn ecosystem), motion, icons, fonts, stock, AI-3D, the Blender→web pipeline. **License + commercial-use flagged per source.** Read before pulling anything into a build; **mandatory for paid/client work** (ship only commercial-cleared licenses). |
 
 ---
 
@@ -133,4 +139,4 @@ No verb → run the procedure from the Design Read.
 
 ## Definition of done
 
-Not "it renders." Done means: the Design Read was declared; the system is locked and consistent; the layout has no repeated families; every state exists; contrast passes; motion is motivated and has a reduced-motion path; if Tier ≥ 1, the canvas is lazy-mounted, mobile-handled, and reduced-motion-safe, and Core Web Vitals survive; and `reference/preflight.md` passes top to bottom. Verify in the browser when you can.
+Not "it renders." There are two ways to fail and done means beating **both**: it doesn't look like the AI default (**slop**), and every component genuinely *works* (not **demo-ware**). Concretely: the Design Read was declared; the system is locked and consistent; the layout has no repeated families; every interactive element works and carries the full state matrix; micro-interactions have zero layout shift; contrast passes; motion is motivated and has a reduced-motion path; if Tier ≥ 1, the canvas is lazy-mounted, mobile-handled, and reduced-motion-safe, and Core Web Vitals survive; the **craft self-audit passes** (slop pass + works pass + pixels pass, → `reference/craft.md`); and `reference/preflight.md` passes top to bottom. The bar: **a senior designer AND a senior engineer would both sign off.** If either would send it back, it's not done — keep going. Browser verification via `driver.mjs` is mandatory, not optional — run it and read the screenshots before claiming done.

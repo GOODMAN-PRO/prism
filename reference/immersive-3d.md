@@ -11,19 +11,61 @@ React Three Fiber renders a Three.js scene as JSX. Every three.js class is a low
 ```jsx
 "use client";
 import { Canvas } from "@react-three/fiber";
+import { useReducedMotion } from "motion/react"; // or your own media-query hook
 
-<Canvas
-  camera={{ position: [0, 0, 5], fov: 45 }}
-  dpr={[1, 2]}                 // clamp pixel ratio — never raw devicePixelRatio (retina = 4× the pixels)
-  gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-  frameloop="demand"           // render only on change/invalidate for static scenes — huge battery/CPU win
->
-  <Scene />
-</Canvas>
+function Hero3D({ static: isStatic = false }) {
+  const reduced = useReducedMotion();
+  return (
+    <Canvas
+      camera={{ position: [0, 0, 5], fov: 45 }}
+      dpr={[1, 2]}                 // clamp pixel ratio — never raw devicePixelRatio (retina = 4× the pixels)
+      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      frameloop={reduced ? "never" : (isStatic ? "demand" : "always")} // reduced-motion = frozen frame
+    >
+      <Scene />
+    </Canvas>
+  );
+}
 ```
 
-- **`frameloop="demand"`** for scenes that aren't continuously animating — call `invalidate()` to render a frame. Use `"always"` only when something moves every frame.
+- **`frameloop="demand"`** for scenes that aren't continuously animating — call `invalidate()` to render a frame. Use `"always"` only when something moves every frame. Under `prefers-reduced-motion`, force `"never"` so the loop is frozen on a single composed frame.
 - The Canvas is **always** a lazy-mounted, code-split leaf (`reference/performance.md`). It never blocks LCP.
+
+**The fallback, as actual code (not a comment).** Probe reduced-motion *and* WebGL support; render a real `<img>` poster with explicit `width`/`height` + `fetchpriority="high"` (CLS = 0) when 3D is off, else the lazy Canvas with the same poster as Suspense `fallback`:
+
+```jsx
+import { lazy, Suspense } from "react";
+import { useReducedMotion } from "motion/react";
+const Canvas = lazy(() => import("@react-three/fiber").then(m => ({ default: m.Canvas })));
+
+const hasWebGL = () => {
+  try { return !!document.createElement("canvas").getContext("webgl2"); }
+  catch { return false; }
+};
+
+// real element with intrinsic dimensions → zero layout shift, doubles as LCP image
+const Poster = () => (
+  <img src="/hero-poster.avif" alt="" width={1280} height={720} fetchpriority="high"
+       style={{ width: "100%", height: "auto" }} />
+);
+
+function Hero() {
+  const reduced = useReducedMotion();
+  if (reduced || !hasWebGL()) return <Poster />;          // 3D off → static poster, never a blank box
+  return (
+    <Suspense fallback={<Poster />}>
+      <Canvas frameloop={reduced ? "never" : "demand"} dpr={[1, 2]}>
+        <Scene />
+      </Canvas>
+    </Suspense>
+  );
+}
+```
+
+In any ambient `useFrame`, bail under reduced-motion so nothing drifts:
+```jsx
+useFrame((_, dt) => { if (reduced) return; group.current.rotation.y += dt * 0.1; });
+```
 
 ## 2. Scene essentials — light it like a studio, not a tech demo
 
@@ -67,7 +109,8 @@ import { extend, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
 const GradientMaterial = shaderMaterial(
-  { uTime: 0, uColorA: new THREE.Color("#1a0b2e"), uColorB: new THREE.Color("#0ea5e9") },
+  // palette is illustrative — pull from the project real OKLCH ramp; never ship purple→cyan (see craft.md).
+  { uTime: 0, uColorA: new THREE.Color("#0a0a0a"), uColorB: new THREE.Color("#e8e2d6") }, // near-black ink → warm bone
   /* glsl vertex */ `
     varying vec2 vUv;
     void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
@@ -81,12 +124,13 @@ const GradientMaterial = shaderMaterial(
 extend({ GradientMaterial });
 
 function Backdrop() {
-  const ref = useRef();
-  useFrame((_, dt) => { ref.current.uTime += dt; });      // imperative uniform write — no re-render
+  const ref = useRef(null);
+  // Rule for every imperative useFrame mutation in this file: init the ref to null and bail if it's not mounted yet.
+  useFrame((_, dt) => { if (!ref.current) return; ref.current.uTime += dt; });      // imperative uniform write — no re-render
   return (
     <mesh scale={[10, 6, 1]} position={[0, 0, -2]}>
       <planeGeometry args={[1, 1, 64, 64]} />
-      <gradientMaterial ref={ref} uColorA="#1a0b2e" uColorB="#0ea5e9" />
+      <gradientMaterial ref={ref} uColorA="#0a0a0a" uColorB="#e8e2d6" />
     </mesh>
   );
 }
@@ -94,7 +138,7 @@ function Backdrop() {
 
 - Drive `uTime` in `useFrame` by mutating the ref — never via React state.
 - Newer drei also accepts pierce-notation props (`uniforms-uColorA-value`) and an optional 4th `onInit` callback.
-- **Effects to reach for in fragment shaders:** fresnel rim (`pow(1.0 - dot(normal, viewDir), p)`) for glowing edges; simplex/curl noise for flowing gradients and displacement; UV distortion for liquid/heat. For shader-heavy *backgrounds* without a full R3F tree, `ogl` is the lightweight path (React Bits' Aurora uses it).
+- **Effects to reach for in fragment shaders** — *reach for these only when the content motivates them; a glowing fresnel rim with no reason is slop. Ask what the effect communicates before adding it.* fresnel rim (`pow(1.0 - dot(normal, viewDir), p)`) for glowing edges; simplex/curl noise for flowing gradients and displacement; UV distortion for liquid/heat. For shader-heavy *backgrounds* without a full R3F tree, `ogl` is the lightweight path (React Bits' Aurora uses it).
 
 ## 4. Scroll-driven 3D — pick the path by tier
 
@@ -182,8 +226,8 @@ import { EffectComposer, Bloom, DepthOfField, ChromaticAberration, Vignette, Noi
 **Selective bloom (the key technique — control it on the *material*, not the pass):** lift the material's color **out of the 0–1 range** *and* set **`toneMapped={false}`**. R3F defaults to ACES tone mapping, which otherwise clamps emissive back into 0–1 and kills the glow. The `Bloom` `luminanceThreshold` then decides what blooms.
 
 ```jsx
-{/* glows — equivalent to RGB [2,0,0] */}
-<meshStandardMaterial emissive="red" emissiveIntensity={2} toneMapped={false} />
+{/* glows — emissive should be the project real accent, used by restraint (≤10% of frame) — glow is earned, not default. */}
+<meshStandardMaterial emissive="#ff5a1f" emissiveIntensity={2} toneMapped={false} />
 ```
 Set `luminanceThreshold={1}` so only >1 colors bloom; everything tone-mapped (≤1) stays crisp.
 

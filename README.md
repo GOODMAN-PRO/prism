@@ -12,11 +12,14 @@ Stack it targets: **React + React Three Fiber + Three.js + GSAP + Lenis + Motion
 
 Most "design" prompts produce the same AI-default look — Inter/Space-Grotesk, purple gradients, glowing cards, icon-tile features. prism is **anti-slop by construction**:
 
+- **A craft bible (`craft.md`)** that draws the hard line between *slop* (looks AI-default) and *demo-ware* (looks fine, doesn't actually work) — every build has to beat **both**, with a self-audit you run on your own output before "done."
 - **5 design-language presets + a variance engine** so two builds don't land on the same look (Ethereal Glass, Editorial Minimal, Industrial Brutalist, Soft Structural, Immersive Cinematic).
 - **Real reference, not vibes** — committed docs for foundations (type/color/space/grid), component patterns (nav, hero, bento, cards, forms, modals, pricing…), motion & micro-interactions, immersive 3D/WebGL/shaders, performance budgets, and redesign auditing.
 - **A committed verify harness (`driver.mjs`)** — it launches your built site in real headless Chromium and drives it through the prism checks: horizontal-overflow sweep at 5 widths, console/page errors, a screenshot of **every GSAP ScrollTrigger pin**, mobile reframe, and `prefers-reduced-motion`. Code that clicks the button, not a markdown checklist that pretends to.
 
 > A clean console is not a good-looking page. prism finds the *technical* faults; you still read the screenshots.
+
+**See it:** open [`examples/style-atlas/index.html`](./examples/style-atlas/index.html) — the same "now playing" card rendered in **twenty** design languages (Minimalism · Glassmorphism · Liquid Glass · Neo-Brutalism · Claymorphism · Skeuomorphism · Neumorphism · Aurora · Terminal · Synthwave · Material · Cyberpunk · Swiss · Bauhaus · Memphis · Frutiger Aero · Editorial · Maximalism · Acid · Spatial), with a real working seek bar. One skeleton, twenty souls.
 
 ---
 
@@ -26,16 +29,20 @@ Most "design" prompts produce the same AI-default look — Inter/Space-Grotesk, 
 prism/
 ├─ SKILL.md                  # the router — when to use what, the build procedure, the preflight
 ├─ driver.mjs                # the browser verify harness (headless Chromium)
-└─ reference/
-   ├─ foundations.md         # type, color, spacing, grid, the anti-slop tells
-   ├─ components.md          # nav · hero · bento · cards · forms · modals · marquee · footer · pricing
-   ├─ motion.md              # GSAP + ScrollTrigger + Lenis + Motion; micro-interactions
-   ├─ immersive-3d.md        # R3F / Three.js / WebGL / GLSL shaders / postprocessing; 3D tiers 0–3
-   ├─ performance.md         # Core Web Vitals, budgets, lazy 3D, image strategy
-   ├─ design-languages.md    # the 5 presets + the variance engine
-   ├─ redesign.md            # auditing & upgrading an existing site
-   ├─ preflight.md           # the ship checklist
-   └─ verify.md              # how to drive driver.mjs
+├─ reference/
+│  ├─ craft.md               # the 0%-slop / production-grade bible — the quality spine
+│  ├─ foundations.md         # type, color, spacing, grid, the anti-slop tells
+│  ├─ components.md          # nav · hero · bento · cards · forms · modals · marquee · footer · pricing
+│  ├─ motion.md              # GSAP + ScrollTrigger + Lenis + Motion; micro-interactions
+│  ├─ immersive-3d.md        # R3F / Three.js / WebGL / GLSL shaders / postprocessing; 3D tiers 0–3
+│  ├─ performance.md         # Core Web Vitals, budgets, lazy 3D, image strategy
+│  ├─ design-languages.md    # the 5 presets + the variance engine
+│  ├─ resources.md           # license-flagged asset & component sources (3D, fonts, registries…)
+│  ├─ redesign.md            # auditing & upgrading an existing site
+│  ├─ preflight.md           # the ship checklist
+│  └─ verify.md              # how to drive driver.mjs
+└─ examples/
+   └─ style-atlas/           # one component, twenty design languages (open index.html)
 ```
 
 ---

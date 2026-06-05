@@ -64,13 +64,13 @@ CSS built-in easings are too weak. Use these named curves:
 }
 ```
 
-Direction: **enter → ease-out, exit → ease-in, on-screen → ease-in-out, loop → linear/sine.** No bounce/elastic in professional UI (reserve `--ease-out-back` for playful drag/settle). Don't hand-roll curves — these are the vetted set.
+Direction: **enter → ease-out, exit → ease-in, on-screen → ease-in-out, loop → linear/sine.** No bounce/elastic in professional UI (reserve `--ease-out-back` for playful drag/settle). Carve-out: an overshoot on a *press* is permitted ONLY for explicitly playful/consumer briefs, and only via a Motion spring (velocity-based, interruptible) — never as a CSS overshoot curve set as the universal default. Don't hand-roll curves — these are the vetted set.
 
 ---
 
 ## 4. Micro-interactions (the unseen details that compound)
 
-- **Press feedback:** every pressable gets `:active { transform: scale(0.97) }`, `transition: transform 160ms var(--ease-out)`. Subtle (0.95–0.98).
+- **Press feedback:** every pressable gets `:active { transform: scale(0.97) }`, `transition: transform ~0.12s var(--ease-out)`. Subtle (0.95–0.98; smaller travel on larger surfaces). This snappy decelerate stays on `var(--ease-out)` by default — no overshoot/bounce. An overshoot/spring press is the sanctioned exception ONLY for explicitly playful briefs (implemented as a Motion spring, never a CSS overshoot curve), so Section 3's "no bounce/elastic in UI" law does not forbid it there. Never a .25s+ ease on a press (reads laggy/cheap).
 - **Never animate from `scale(0)`.** Nothing appears from nothing. Start `scale(0.95)` + `opacity:0`.
 - **Origin-aware popovers:** `transform-origin: var(--radix-popover-content-transform-origin)` (scale from the trigger). **Exception: modals stay `center`.**
 - **Tooltips:** delay the first, then instant (no delay/animation) on adjacent ones (`[data-instant]{transition-duration:0ms}`).
@@ -109,6 +109,8 @@ const x = useSpring(useMotionValue(0), { stiffness: 100, damping: 10 });
 
 GSAP owns scroll-driven and choreographed sequences. **Lenis** is the smooth-scroll spine underneath. Register once; always clean up with `gsap.context` + `ctx.revert()`; gate on reduced motion.
 
+**Prefer `useGSAP()` (from `@gsap/react`) over raw `useEffect`/`useLayoutEffect`.** It's a drop-in for `useLayoutEffect` that auto-reverts every animation and ScrollTrigger it creates (via `gsap.context`) on unmount, is SSR-safe, and exposes `contextSafe()` to wrap event handlers that create animations after mount. Pass `{ scope: ref, dependencies: [...] }` instead of hand-writing the context + revert.
+
 ### Lenis + ScrollTrigger sync
 
 ```jsx
@@ -118,10 +120,12 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
+if (process.env.NODE_ENV !== "production") window.ScrollTrigger = ScrollTrigger; // dev-only: driver.mjs needs this global
 
 export function useSmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    if (process.env.NODE_ENV !== "production") window.__lenis = lenis; // dev-only: driver.mjs needs this global
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (t) => { lenis.raf(t * 1000); };
     gsap.ticker.add(raf);
@@ -131,23 +135,22 @@ export function useSmoothScroll() {
 }
 ```
 
+> **Driver build contract:** the dev-only `window.__lenis` and `window.ScrollTrigger` globals above are required — without them `driver.mjs`'s pin + smooth-scroll checks silently fail, the driver degrades to native scroll and reports "0 pins" on a *correct* page.
+
 ### Sticky-stack (cards pin and shrink as the next arrives)
 
 ```jsx
-useEffect(() => {
-  if (reduce || !ref.current) return;
-  const ctx = gsap.context(() => {
-    const cards = gsap.utils.toArray(".stack-card");
-    cards.forEach((card, i) => {
-      if (i === cards.length - 1) return;
-      ScrollTrigger.create({ trigger: card, start: "top top",
-        endTrigger: cards[cards.length - 1], end: "top top", pin: true, pinSpacing: false });
-      gsap.to(card, { scale: 0.92, opacity: 0.55, ease: "none",
-        scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: true } });
-    });
-  }, ref);
-  return () => ctx.revert();
-}, [reduce]);
+const { contextSafe } = useGSAP(() => {
+  if (reduce) return;
+  const cards = gsap.utils.toArray(".stack-card");
+  cards.forEach((card, i) => {
+    if (i === cards.length - 1) return;
+    ScrollTrigger.create({ trigger: card, start: "top top",
+      endTrigger: cards[cards.length - 1], end: "top top", pin: true, pinSpacing: false });
+    gsap.to(card, { scale: 0.92, opacity: 0.55, ease: "none",
+      scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: true } });
+  });
+}, { scope: ref, dependencies: [reduce] });
 ```
 
 ### Horizontal pan (pin a section, scrub the track sideways)
@@ -159,7 +162,21 @@ gsap.to(track.current, { x: -distance, ease: "none",
     end: () => `+=${distance}`, pin: true, scrub: 1, invalidateOnRefresh: true } });
 ```
 
-Critical for both: `start: "top top"`, `pin: true`. The #1 bug is `start: "top center"` so the animation fires before the section pins. For scrubbed **text reveals**, fade word opacity 0.1→1 sequentially tied to scroll.
+Critical for both: `start: "top top"`, `pin: true`. The #1 bug is `start: "top center"` so the animation fires before the section pins.
+
+### Scrubbed text reveal (word-by-word fade tied to scroll)
+
+Split with GSAP **SplitText** (now free) into words, then fade each up as it scrolls through:
+
+```jsx
+const { contextSafe } = useGSAP(() => {
+  if (reduce) return; // reduced motion: leave text at full opacity, no split
+  const split = new SplitText(ref.current, { type: "words" });
+  gsap.fromTo(split.words, { opacity: 0.12 }, { opacity: 1, stagger: 0.08, ease: "none",
+    scrollTrigger: { trigger: ref.current, start: "top 80%", end: "top 30%", scrub: true } });
+  return () => split.revert(); // restore original DOM in cleanup
+}, { scope: ref, dependencies: [reduce] });
+```
 
 ---
 
@@ -185,7 +202,9 @@ export function Reveal({ items }) {
 }
 ```
 
-- Scroll-linked values: `useScroll` + `useTransform` (parallax, progress bars). Hardware-accel caveat: Motion's `x`/`y`/`scale` shorthands run on the main thread — under load use the full `transform: "translateX(..)"` string for GPU offload.
+- `useReducedMotion()` is `null` on the first SSR render and resolves client-side — treat `null` as no-preference-yet and avoid divergent SSR/client markup (branch inside effects or guard the motion-only branch) to prevent a hydration flash.
+- **Do NOT apply one uniform fade-up to every section** — identical fade-up-on-scroll across a page is a slop tell. Reserve entrance motion for content that benefits, vary the gesture (clip-path wipe, mask, scale-from-95, directional slide tied to layout), and let most below-fold content simply be present.
+- Scroll-linked values: `useScroll` + `useTransform` (parallax, progress bars). Hardware-accel: Motion's `x`/`y`/`scale`/`rotate`/`opacity` shorthands ARE hardware-composited and skip layout — prefer them. Avoid driving layout props (`width`, `top`, `margin`) or layout animations on hot paths; use transform-based moves and FLIP only when measured.
 - Exit animations: wrap in `<AnimatePresence>`.
 
 ---

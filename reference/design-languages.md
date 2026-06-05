@@ -2,9 +2,13 @@
 
 Pick **one** language in step 3 and commit. It sets palette, type, radius, motion intensity, and 3D usage as a coherent whole. Don't blend two. The goal is that someone could *not* guess the aesthetic from the category alone (the two-altitude slop test in `foundations.md`).
 
+Committing to a language is not committing to a *look* — two sites in the same preset MUST differ in type pairing, accent hue, layout archetype, and density. Before reusing a preset, change at least the display face and the dominant layout archetype, or you are shipping a template.
+
 ---
 
 ## The variance engine
+
+**Dials legend:** Dials = VARIANCE / MOTION / DENSITY, each 1–10 (defined in `SKILL.md` step 3); 3D Tier 0–3 = none → ambient accent → integrated scroll-3D → full immersive. Per-preset dials are starting points, not locks.
 
 Before settling, roll two axes so you don't default to the same look twice. Choose deliberately from the Design Read — not randomly, but *variably*.
 
@@ -13,10 +17,10 @@ Before settling, roll two axes so you don't default to the same look twice. Choo
 | Vibe | Signature |
 |---|---|
 | Ethereal Glass | OLED black, radial mesh orbs, frosted hairline cards, wide grotesk |
-| Editorial Luxury | warm off-white or oxblood, high-contrast serif display, film-grain |
+| Editorial Minimal | warm off-white or oxblood, high-contrast serif display, film-grain |
+| Industrial Brutalist | near-black, mono, scanlines, single hazard accent |
 | Soft Structural | silver/white, massive bold grotesk, diffused ambient shadows |
-| Terminal Native | near-black, mono, scanlines, single hazard accent |
-| Drenched Brand | one saturated color *is* the surface |
+| Immersive Cinematic | one saturated color — or a dark WebGL world — *is* the surface |
 
 | Layout | Signature |
 |---|---|
@@ -24,7 +28,7 @@ Before settling, roll two axes so you don't default to the same look twice. Choo
 | Z-Axis Cascade | overlapping cards, slight rotation, depth-of-field |
 | Editorial Split | massive type left, interactive asset right, huge negative space |
 | Scroll Theater | pinned/scrubbed sections, horizontal pans, sticky stacks |
-| Centered Manifesto | one focal message, used sparingly (low variance only) |
+| Centered Manifesto | ONE oversized focal line, centered — permitted only as a single hero beat at VARIANCE ≤2, never a full page or repeated sections; every following section must break symmetry. Reach for it twice and you are slopping. |
 
 Same category should not produce the same vibe×layout twice in a row.
 
@@ -45,7 +49,7 @@ Same category should not produce the same vibe×layout twice in a row.
 
 - **Surface:** pure white or warm bone `oklch(0.98 0.005 90)`; secondary surface `oklch(0.97 0.006 90)`.
 - **Borders:** ultra-light hairline `oklch(0.92 0 0)` / `rgba(0,0,0,0.06)`. Shadows near-absent (opacity <0.05) — depth via type and space, not elevation.
-- **Type:** the star. High-contrast serif or confident grotesk display (tight tracking −0.02 to −0.04em, leading 1.1); body off-black `#1a1a1a`, leading 1.6; mono for meta. Spot **muted pastels** for tags only (pale red `#FDEBEC`/text `#9F2F2D`, pale blue, pale green, pale yellow).
+- **Type:** the star. High-contrast serif or confident grotesk display (tight tracking −0.02 to −0.04em, leading 1.1); body near-black tuned to the brand (e.g. `oklch(0.22 0.01 <brand-hue>)`, not pure `#000`), leading 1.6; mono for meta. Spot **muted pastels** for tags only — one desaturated family DERIVED from the accent (the `#FDEBEC` pale-bg / `#9F2F2D` saturated-text red is one example; generate your own pale-bg/saturated-text pair per project), pale blue, pale green, pale yellow.
 - **Components:** flat bento (1px hairline, 8–12px radius, generous padding); `<kbd>` physical keys; FAQ as `border-bottom` rows, no boxes; faux-OS window chrome for product shots.
 - **Motion:** invisible. Fade+`translateY(12px)` over 600ms `cubic-bezier(0.16,1,0.3,1)`; one slow ambient gradient drift behind hero (`opacity 0.02–0.04`, fixed layer).
 - **Avoid:** gradients, neon, heavy shadows, pill-shaped large containers, `rounded-full` cards.
@@ -54,7 +58,7 @@ Same category should not produce the same vibe×layout twice in a row.
 **For:** data-heavy dashboards, technical portfolios, editorial that wants to feel like declassified blueprints. **Dials:** V7 / M4 / D8. **3D Tier:** 0–1. **Pick ONE substrate and commit.**
 
 - **Swiss Print (light):** bg `#F4F4F0`, ink `#0A0A0A`, the ONLY accent hazard red `#E61919`. **OR Tactical CRT (dark):** bg `#0A0A0A`, phosphor `#EAEAEA`, same red; optional single terminal-green readout `#4AF626`.
-- **Type:** heavy neo-grotesk macro headers at huge clamp (`clamp(4rem,10vw,15rem)`), tracking −0.03 to −0.06em, leading 0.85–0.95, UPPERCASE. Mono micro-type for all metadata (10–14px, tracking +0.05–0.1em, uppercase).
+- **Type:** heavy neo-grotesk macro headers at huge clamp, tracking −0.03 to −0.06em, leading 0.85–0.95, UPPERCASE. **Cap the fluid max so the longest word fits 360px** — prefer `clamp(2.5rem,10vw,9rem)` for multi-word headers, reserve 12–15rem only for short single words, set `overflow-wrap:anywhere` on macro headers, and verify no overflow at 360px. Mono micro-type for all metadata (10–14px, tracking +0.05–0.1em, uppercase).
 - **Geometry:** zero `border-radius`. Visible compartmentalization with 1–2px solid borders; razor-thin hairlines via `display:grid; gap:1px` over a contrasting bg. ASCII framing (`[ SYSTEM ]`, `>>>`), `®/©/™` as structural glyphs.
 - **Texture:** halftone/1-bit dither on images, CRT scanlines (`repeating-linear-gradient`), a global low-opacity noise layer (fixed, `pointer-events:none`).
 - **Avoid:** gradients, soft shadows, translucency, rounded corners, mixing the two substrates.
