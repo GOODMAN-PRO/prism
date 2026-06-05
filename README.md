@@ -1,5 +1,7 @@
 # prism
 
+<a href="https://goodman-pro.github.io/prism/examples/style-atlas/"><img src="./assets/og.png" alt="prism — one component, twenty design languages" width="100%"></a>
+
 **The unified design-engineering skill for building award-grade, immersive websites and web interfaces — for [Claude Code](https://docs.claude.com/en/docs/claude-code) and Claude agents.**
 
 ### ▶ Live demo — [the style atlas](https://goodman-pro.github.io/prism/examples/style-atlas/)
