@@ -1,0 +1,11 @@
+# verify-harness output
+prism-verify/
+*.png
+
+# node
+node_modules/
+package-lock.json
+
+# os
+.DS_Store
+Thumbs.db
