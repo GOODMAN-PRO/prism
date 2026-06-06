@@ -506,10 +506,89 @@
   .s-spatial.alt .card::before{background:radial-gradient(80% 50% at 30% 0%,rgba(255,190,120,.18),transparent 60%)} .s-spatial.alt .artist,.s-spatial.alt .time{color:#d4b89a}
   .s-spatial.alt .fill{background:linear-gradient(90deg,#ffc98a,#fff0e0)} .s-spatial.alt .card{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 30px 60px -20px rgba(0,0,0,.8),0 60px 120px -40px rgba(160,110,40,.5)}
 
+  /* ---------- two-column hero with floating cards ---------- */
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:clamp(30px,5vw,64px);align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.float-hero{display:none}}
+  .float-hero{position:relative;height:344px;justify-self:center;width:100%;max-width:380px}
+  .fc{position:absolute;width:280px;padding:15px 17px;border-radius:15px;transform:rotate(var(--rot,0deg));will-change:transform}
+  .fc .fr{display:flex;gap:11px;align-items:center}
+  .fc .fsq{width:42px;height:42px;border-radius:10px;flex:0 0 auto;background:linear-gradient(135deg,#ff6a3d,#f7c531 42%,#7b3df5)}
+  .fc .ft{font-weight:700;font-size:14.5px;line-height:1.1}
+  .fc .fa{font-size:10.5px;opacity:.62;margin-top:2px}
+  .fc .fl{position:absolute;top:11px;right:13px;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.58}
+  .fc .fb{height:6px;border-radius:99px;margin-top:13px;position:relative;overflow:hidden}
+  .fc .fb i{position:absolute;left:0;top:0;bottom:0;right:55%;border-radius:99px}
+  .fc1{--rot:-8deg;top:16px;left:0;z-index:1;background:#fff;color:#16150f;border:1px solid rgba(0,0,0,.1);box-shadow:0 30px 56px -22px rgba(0,0,0,.6);animation:floaty 6s ease-in-out infinite}
+  .fc1 .fb{background:rgba(0,0,0,.1)} .fc1 .fb i{background:#16150f}
+  .fc2{--rot:5deg;top:122px;left:94px;z-index:3;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.2);color:#eef1f6;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 30px 56px -22px rgba(0,0,0,.65);animation:floaty 7.1s ease-in-out -2.4s infinite}
+  .fc2 .fb{background:rgba(255,255,255,.16)} .fc2 .fb i{background:linear-gradient(90deg,#5b8cff,#14e0a9)}
+  .fc3{--rot:-4deg;top:228px;left:18px;z-index:2;background:#ffd633;color:#0a0a0a;border:3px solid #0a0a0a;border-radius:0;box-shadow:8px 8px 0 #0a0a0a;animation:floaty 7.8s ease-in-out -4.2s infinite}
+  .fc3 .fsq{border-radius:0;border:2px solid #0a0a0a} .fc3 .ft{font-weight:900;text-transform:uppercase} .fc3 .fl{opacity:.75}
+  .fc3 .fb{background:#fff;border:2px solid #0a0a0a;border-radius:0;height:8px} .fc3 .fb i{background:#3d5afe}
+  @keyframes floaty{0%,100%{transform:rotate(var(--rot)) translateY(0)}50%{transform:rotate(var(--rot)) translateY(-15px)}}
+  @media(hover:hover){.float-hero:hover .fc{animation-play-state:paused}}
+
+  /* ===== variant C skins (alt2) ===== */
+  .s-min.alt2{background:#eef1f7}
+  .s-min.alt2 .card{background:#fff;border-color:rgba(20,50,120,.14);color:#16213a}
+  .s-min.alt2 .bar{background:rgba(20,50,120,.12)} .s-min.alt2 .fill{background:#2f5fd0} .s-min.alt2 .play{background:#2f5fd0;color:#fff}
+  .s-glass.alt2::before{background:radial-gradient(38% 48% at 20% 24%,#8b5cffaa,transparent 70%),radial-gradient(34% 44% at 82% 30%,#ff4ecdaa,transparent 70%),radial-gradient(46% 56% at 60% 88%,#5b8cffaa,transparent 70%)}
+  .s-glass.alt2 .fill{background:linear-gradient(90deg,#a855f7,#ff4ecd);box-shadow:0 0 12px #a855f7} .s-glass.alt2 .play{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 22px rgba(168,85,247,.5)}
+  .s-liquid.alt2{background:radial-gradient(130% 110% at 28% 0%,#ffffff,#e2efe9 58%,#bfd6cd)}
+  .s-liquid.alt2 .fill{background:linear-gradient(90deg,#5ee0c0,#5ec8ff)}
+  .s-brutal.alt2{background:#ff4d8d}
+  .s-brutal.alt2 .fill{background:#15e0e0} .s-brutal.alt2 .play{background:#ffd633;color:#0a0a0a}
+  .s-clay.alt2{background:#fbe6dc}
+  .s-clay.alt2 .card{background:#f0a07e;box-shadow:0 20px 44px rgba(200,110,70,.45),inset 0 -9px 18px rgba(150,70,40,.5),inset 0 9px 18px rgba(255,255,255,.55)}
+  .s-clay.alt2 .play{color:#d2603a} .s-clay.alt2 .bar{background:rgba(150,70,40,.3);box-shadow:inset 0 2px 4px rgba(150,70,40,.5)}
+  .s-skeuo.alt2 .top::before{background:radial-gradient(circle at 35% 35%,#ffd0d0,#ff3b3b 60%,#8c1313);box-shadow:0 0 8px #ff3b3b,0 0 2px #fff}
+  .s-skeuo.alt2 .play{background:linear-gradient(180deg,#3a3d40,#1f2123 55%,#101113);border-color:#000}
+  .s-skeuo.alt2 .fill{background:linear-gradient(180deg,#ffb3b3,#e64545)}
+  .s-neu.alt2{background:#e3e8f4}
+  .s-neu.alt2 .card{background:#e3e8f4;box-shadow:11px 11px 26px #c1c7d6,-11px -11px 26px #ffffff}
+  .s-neu.alt2 .fill{background:linear-gradient(90deg,#8f7ad6,#6d5ab6)} .s-neu.alt2 .play{color:#6d5ab6;background:#e3e8f4}
+  .s-neu.alt2 .bar{background:#e3e8f4;box-shadow:inset 3px 3px 6px #c1c7d6,inset -3px -3px 6px #ffffff}
+  .s-aurora.alt2::before{background:radial-gradient(38% 46% at 22% 22%,#ff7a3d,transparent 62%),radial-gradient(42% 52% at 80% 26%,#ff2e6a,transparent 62%),radial-gradient(48% 50% at 62% 92%,#ffb03d,transparent 62%),radial-gradient(40% 42% at 30% 82%,#b026ff,transparent 62%)}
+  .s-aurora.alt2 .fill{background:linear-gradient(90deg,#ff7a3d,#ff2e6a,#ffb03d)} .s-aurora.alt2 .play{background:linear-gradient(135deg,#ff2e6a,#ffb03d)}
+  .s-term.alt2 .card{color:#5cf0ff;border-color:#1f4a5a;box-shadow:0 0 0 1px #03070a,0 22px 50px rgba(0,40,50,.4),inset 0 0 70px rgba(60,220,255,.05)}
+  .s-term.alt2 .title{color:#9af0ff;text-shadow:0 0 9px rgba(92,240,255,.5)} .s-term.alt2 .artist,.s-term.alt2 .time{color:#3f9faf}
+  .s-term.alt2 .fill{background:#5cf0ff;box-shadow:0 0 9px #5cf0ff} .s-term.alt2 .bar{border-color:#2f7f8f;background:#04141a}
+  .s-term.alt2 .ctl{color:#5cf0ff;border-color:#2f7f8f} .s-term.alt2 .play{color:#5cf0ff;border-color:#5cf0ff;box-shadow:0 0 16px rgba(92,240,255,.3),inset 0 0 16px rgba(92,240,255,.1)}
+  .s-term.alt2 .art{border-color:#2f7f8f;filter:saturate(.6) hue-rotate(120deg) brightness(.9)}
+  .s-vapor.alt2{background:linear-gradient(180deg,#1a0b2e 0%,#3a1b54 52%,#5a1b3a 100%)}
+  .s-vapor.alt2::after{background:linear-gradient(180deg,#b15fff,#ffd24d)}
+  .s-vapor.alt2 .card{border-color:#b15fff;box-shadow:0 0 30px rgba(177,95,255,.4),0 0 60px rgba(255,210,77,.18),inset 0 0 30px rgba(177,95,255,.08)}
+  .s-vapor.alt2 .title{text-shadow:0 0 10px #b15fff,2px 2px 0 rgba(255,210,77,.8)} .s-vapor.alt2 .artist{color:#ffd24d}
+  .s-vapor.alt2 .fill{background:linear-gradient(90deg,#b15fff,#ffd24d);box-shadow:0 0 10px #b15fff} .s-vapor.alt2 .play{border-color:#b15fff;box-shadow:0 0 20px rgba(177,95,255,.5)} .s-vapor.alt2 .prev,.s-vapor.alt2 .next{color:#ffd24d}
+  .s-mat.alt2 .bar{background:#f6d9e6} .s-mat.alt2 .fill{background:#b3306b}
+  .s-mat.alt2 .play{background:#b3306b;box-shadow:0 3px 6px rgba(179,48,107,.4),0 9px 20px rgba(179,48,107,.28)} .s-mat.alt2 .prev,.s-mat.alt2 .next{color:#b3306b}
+  .s-cyber.alt2 .card{border-color:#a855f7;box-shadow:0 0 30px rgba(168,85,247,.22),inset 0 0 44px rgba(168,85,247,.04)}
+  .s-cyber.alt2 .title{text-shadow:0 0 8px rgba(168,85,247,.55)} .s-cyber.alt2 .artist{color:#3b82f6}
+  .s-cyber.alt2 .fill{background:linear-gradient(90deg,#a855f7,#3b82f6);box-shadow:0 0 10px #a855f7} .s-cyber.alt2 .art{box-shadow:0 0 0 1px #a855f7}
+  .s-cyber.alt2 .bar{border-color:rgba(168,85,247,.32)} .s-cyber.alt2 .ctl,.s-cyber.alt2 .play{color:#a855f7;border-color:#a855f7} .s-cyber.alt2 .play{box-shadow:0 0 18px rgba(168,85,247,.4)}
+  .s-swiss.alt2 .artist{color:#0a0a0a} .s-swiss.alt2 .art{background:#f5c518} .s-swiss.alt2 .fill{background:#0a0a0a} .s-swiss.alt2 .play{background:#f5c518;color:#0a0a0a}
+  .s-bauhaus.alt2 .art{background:#f5c518;border-color:#111} .s-bauhaus.alt2 .fill{background:#e2231a} .s-bauhaus.alt2 .play{background:#1a48c4;color:#fff}
+  .s-memphis.alt2{background:#f2f0ea}
+  .s-memphis.alt2::before{background:radial-gradient(circle at 13% 18%,#0a0a0a 0 7px,transparent 8px),radial-gradient(circle at 88% 28%,#e2231a 0 6px,transparent 7px),radial-gradient(circle at 82% 82%,#0a0a0a 0 9px,transparent 10px),radial-gradient(circle at 20% 86%,#e2231a 0 6px,transparent 7px)}
+  .s-memphis.alt2 .card{box-shadow:6px 6px 0 #0a0a0a} .s-memphis.alt2 .art{background:linear-gradient(135deg,#0a0a0a,#e2231a)} .s-memphis.alt2 .artist{color:#e2231a} .s-memphis.alt2 .fill{background:#e2231a} .s-memphis.alt2 .play{background:#0a0a0a;color:#fff}
+  .s-y2k.alt2{background:linear-gradient(165deg,#f3d9ff 0%,#c79bf0 45%,#8a4ed0 100%)}
+  .s-y2k.alt2 .card{background:linear-gradient(180deg,#fff,#f6e8ff 50%,#e7cfff)} .s-y2k.alt2 .title{color:#4a1b72} .s-y2k.alt2 .artist,.s-y2k.alt2 .time{color:#8a4ec0}
+  .s-y2k.alt2 .art{background:linear-gradient(135deg,#d98fff,#7a1fd0)} .s-y2k.alt2 .fill{background:linear-gradient(180deg,#eab6ff,#a833e6);box-shadow:0 0 8px rgba(180,80,255,.7)} .s-y2k.alt2 .play{background:linear-gradient(180deg,#cf8fff,#7a1fd0 55%,#4a0a90)} .s-y2k.alt2 .prev,.s-y2k.alt2 .next{color:#7a1fc0}
+  .s-edit.alt2 .artist{color:#3f8f6f} .s-edit.alt2 .fill{background:#3f8f6f} .s-edit.alt2 .play{border-color:#3f8f6f;color:#f3ece0} .s-edit.alt2 .prev,.s-edit.alt2 .next{color:#3f8f6f}
+  .s-max.alt2 .card{background:#00e0ff;box-shadow:7px 7px 0 #ff2e7e,14px 14px 0 #111} .s-max.alt2 .art{background:linear-gradient(135deg,#ff2e7e,#111)}
+  .s-max.alt2 .fill{background:repeating-linear-gradient(45deg,#ff2e7e 0 6px,#111 6px 9px)} .s-max.alt2 .artist{color:#c4005a} .s-max.alt2 .play{background:#111;color:#fff}
+  .s-acid.alt2 .card{border-color:#ffe600;color:#ffe600;box-shadow:5px 5px 0 #b026ff,-2px -2px 0 #00f0ff} .s-acid.alt2 .title{color:#ffe600} .s-acid.alt2 .artist{color:#c77bff}
+  .s-acid.alt2 .art{background:linear-gradient(135deg,#ffe600,#b026ff);border-color:#00f0ff} .s-acid.alt2 .bar{border-color:#ffe600} .s-acid.alt2 .fill{background:repeating-linear-gradient(90deg,#ffe600 0 4px,#0a0a0a 4px 6px)} .s-acid.alt2 .time{color:#9a6cff}
+  .s-acid.alt2 .ctl{color:#ffe600;border-color:#ffe600} .s-acid.alt2 .play{background:#b026ff;color:#fff;border-color:#00f0ff;box-shadow:3px 3px 0 #ffe600}
+  .s-spatial.alt2{background:radial-gradient(120% 120% at 50% 0%,#241a2e,#100a16 60%,#070409)}
+  .s-spatial.alt2 .card::before{background:radial-gradient(80% 50% at 30% 0%,rgba(200,150,255,.18),transparent 60%)} .s-spatial.alt2 .artist,.s-spatial.alt2 .time{color:#c0a8d4}
+  .s-spatial.alt2 .fill{background:linear-gradient(90deg,#c79fff,#f0e0ff)} .s-spatial.alt2 .card{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 30px 60px -20px rgba(0,0,0,.8),0 60px 120px -40px rgba(120,60,180,.5)}
+
   @media(prefers-reduced-motion:reduce){
     .s-aurora::before{animation:none}
     *{scroll-behavior:auto}
     .panel:hover,.panel:hover .art,.s-spatial:hover .art,.og-hero:hover{transform:none}
+    .fc{animation:none}
   }
 </style>
 </head>
@@ -540,11 +619,19 @@
   </nav>
 
   <header class="hero" id="top">
-    <div class="kick">PRISM · A DESIGN-LANGUAGE STUDY</div>
-    <h1>One component.<br><em>Twenty</em> design languages.</h1>
-    <p class="lead">The exact same "now&nbsp;playing" card — identical markup, identical content — rendered through twenty distinct design systems. One skeleton, twenty souls. See how far a single component can travel, and hit play on any of them.</p>
-    <div class="hero-cta"><a class="btn" href="#gallery">Explore the styles ↓</a><span class="hero-note">20 styles · 40 variants · live audio</span></div>
-    <a class="og-hero reveal" href="#gallery" aria-label="Jump to the gallery"><img src="https://goodman-pro.github.io/prism/assets/og.png" alt="prism — one component, twenty design languages" width="1280" height="640" loading="eager"></a>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="kick">PRISM · A DESIGN-LANGUAGE STUDY</div>
+        <h1>One component.<br><em>Twenty</em> design languages.</h1>
+        <p class="lead">The exact same "now&nbsp;playing" card — identical markup, identical content — rendered through twenty distinct design systems. One skeleton, twenty souls. See how far a single component can travel, and hit play on any of them.</p>
+        <div class="hero-cta"><a class="btn" href="#gallery">Explore the styles ↓</a><span class="hero-note">20 styles · 60 looks · live audio</span></div>
+      </div>
+      <div class="float-hero" aria-hidden="true">
+        <div class="fc fc1"><span class="fl">Minimal</span><div class="fr"><div class="fsq"></div><div><div class="ft">Midnight City</div><div class="fa">M83 · Hurry Up</div></div></div><div class="fb"><i></i></div></div>
+        <div class="fc fc2"><span class="fl">Glass</span><div class="fr"><div class="fsq"></div><div><div class="ft">Midnight City</div><div class="fa">M83 · Hurry Up</div></div></div><div class="fb"><i></i></div></div>
+        <div class="fc fc3"><span class="fl">Brutal</span><div class="fr"><div class="fsq"></div><div><div class="ft">Midnight City</div><div class="fa">M83 · Hurry Up</div></div></div><div class="fb"><i></i></div></div>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -607,13 +694,13 @@
     ['20','Spatial','depth','s-spatial']
   ];
   document.getElementById('grid').innerHTML = STYLES.map(function(s){
-    return '<div class="panel '+s[3]+' reveal"><div class="label"><b>'+s[0]+' '+s[1]+'</b> <span>· '+s[2]+'</span></div><div class="vsw"><button class="on" data-v="0" aria-label="Variant A"></button><button data-v="1" aria-label="Variant B"></button></div>'+CARD+'</div>';
+    return '<div class="panel '+s[3]+' reveal"><div class="label"><b>'+s[0]+' '+s[1]+'</b> <span>· '+s[2]+'</span></div><div class="vsw"><button class="on" data-v="0" aria-label="Variant A"></button><button data-v="1" aria-label="Variant B"></button><button data-v="2" aria-label="Variant C"></button></div>'+CARD+'</div>';
   }).join('');
 
   /* ---- variants: A/B per style (recolor live, no reload) ---- */
   document.getElementById('grid').addEventListener('click',function(e){
     var btn=e.target.closest('.vsw button'); if(!btn)return;
-    var panel=btn.closest('.panel'); panel.classList.toggle('alt',btn.getAttribute('data-v')==='1');
+    var panel=btn.closest('.panel'), v=btn.getAttribute('data-v'); panel.classList.remove('alt','alt2'); if(v==='1')panel.classList.add('alt'); else if(v==='2')panel.classList.add('alt2');
     panel.querySelectorAll('.vsw button').forEach(function(b){b.classList.toggle('on',b===btn);});
   });
 
