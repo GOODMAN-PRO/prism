@@ -509,8 +509,8 @@
   /* ---------- two-column hero with floating cards ---------- */
   .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:clamp(30px,5vw,64px);align-items:center}
   @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.float-hero{display:none}}
-  .float-hero{position:relative;height:344px;justify-self:center;width:100%;max-width:380px}
-  .fc{position:absolute;width:280px;padding:15px 17px;border-radius:15px;transform:rotate(var(--rot,0deg));will-change:transform}
+  .float-hero{position:relative;height:380px;justify-self:center;width:100%;max-width:380px}
+  .fc{position:absolute;width:268px;padding:15px 17px;border-radius:15px;transform:rotate(var(--rot,0deg));will-change:transform}
   .fc .fr{display:flex;gap:11px;align-items:center}
   .fc .fsq{width:42px;height:42px;border-radius:10px;flex:0 0 auto;background:linear-gradient(135deg,#ff6a3d,#f7c531 42%,#7b3df5)}
   .fc .ft{font-weight:700;font-size:14.5px;line-height:1.1}
@@ -518,14 +518,14 @@
   .fc .fl{position:absolute;top:11px;right:13px;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.58}
   .fc .fb{height:6px;border-radius:99px;margin-top:13px;position:relative;overflow:hidden}
   .fc .fb i{position:absolute;left:0;top:0;bottom:0;right:55%;border-radius:99px}
-  .fc1{--rot:-8deg;top:16px;left:0;z-index:1;background:#fff;color:#16150f;border:1px solid rgba(0,0,0,.1);box-shadow:0 30px 56px -22px rgba(0,0,0,.6);animation:floaty 6s ease-in-out infinite}
+  .fc1{--rot:-4deg;top:0;left:0;z-index:1;background:#fff;color:#16150f;border:1px solid rgba(0,0,0,.1);box-shadow:0 30px 56px -22px rgba(0,0,0,.6);animation:floaty 6s ease-in-out infinite}
   .fc1 .fb{background:rgba(0,0,0,.1)} .fc1 .fb i{background:#16150f}
-  .fc2{--rot:5deg;top:122px;left:94px;z-index:3;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.2);color:#eef1f6;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 30px 56px -22px rgba(0,0,0,.65);animation:floaty 7.1s ease-in-out -2.4s infinite}
+  .fc2{--rot:3deg;top:134px;left:90px;z-index:3;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.2);color:#eef1f6;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 30px 56px -22px rgba(0,0,0,.65);animation:floaty 7.1s ease-in-out -2.4s infinite}
   .fc2 .fb{background:rgba(255,255,255,.16)} .fc2 .fb i{background:linear-gradient(90deg,#5b8cff,#14e0a9)}
-  .fc3{--rot:-4deg;top:228px;left:18px;z-index:2;background:#ffd633;color:#0a0a0a;border:3px solid #0a0a0a;border-radius:0;box-shadow:8px 8px 0 #0a0a0a;animation:floaty 7.8s ease-in-out -4.2s infinite}
+  .fc3{--rot:-3deg;top:268px;left:14px;z-index:2;background:#ffd633;color:#0a0a0a;border:3px solid #0a0a0a;border-radius:0;box-shadow:8px 8px 0 #0a0a0a;animation:floaty 7.8s ease-in-out -4.2s infinite}
   .fc3 .fsq{border-radius:0;border:2px solid #0a0a0a} .fc3 .ft{font-weight:900;text-transform:uppercase} .fc3 .fl{opacity:.75}
   .fc3 .fb{background:#fff;border:2px solid #0a0a0a;border-radius:0;height:8px} .fc3 .fb i{background:#3d5afe}
-  @keyframes floaty{0%,100%{transform:rotate(var(--rot)) translateY(0)}50%{transform:rotate(var(--rot)) translateY(-15px)}}
+  @keyframes floaty{0%,100%{transform:rotate(var(--rot)) translateY(0)}50%{transform:rotate(var(--rot)) translateY(-10px)}}
   @media(hover:hover){.float-hero:hover .fc{animation-play-state:paused}}
 
   /* ===== variant C skins (alt2) ===== */
