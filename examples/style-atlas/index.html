@@ -425,9 +425,91 @@
   .s-spatial .prev:hover,.s-spatial .next:hover{color:#fff;transform:translateZ(20px) scale(1.08)}
   .s-spatial .prev:active,.s-spatial .next:active{transform:translateZ(8px) scale(.9);transition-duration:.11s}
 
+  /* ---------- hover: cards rise, the art reacts ---------- */
+  .panel{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s cubic-bezier(.2,.8,.2,1)}
+  .panel .art{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  @media(hover:hover){
+    .panel:hover{transform:translateY(-7px);box-shadow:0 36px 70px -28px rgba(0,0,0,.7);z-index:5}
+    .panel:hover .art{transform:scale(1.07) rotate(-2deg)}
+    .s-spatial:hover .art{transform:translateZ(30px) scale(1.06) rotate(-2deg)}
+  }
+
+  /* ---------- variant switch (A / B per style) ---------- */
+  .vsw{position:absolute;top:13px;right:13px;z-index:9;display:flex;gap:5px;padding:5px;border-radius:99px;
+    background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14)}
+  .vsw button{width:11px;height:11px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:transparent;cursor:pointer;transition:background .2s,transform .15s,border-color .2s}
+  .vsw button:hover{transform:scale(1.18)}
+  .vsw button.on{background:#fff;border-color:#fff}
+  .vsw button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+  /* ---------- on-page card hero ---------- */
+  .og-hero{display:block;max-width:740px;margin:clamp(30px,4.5vh,46px) 0 0;border-radius:18px;overflow:hidden;line-height:0;
+    border:1px solid rgba(255,255,255,.1);box-shadow:0 34px 80px -34px rgba(0,0,0,.85);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+  .og-hero img{width:100%;height:auto;display:block}
+  @media(hover:hover){.og-hero:hover{transform:translateY(-5px) scale(1.012);box-shadow:0 46px 100px -34px rgba(0,0,0,.9)}}
+
+  /* ===== variant B skins (toggle via the A/B dots) ===== */
+  .s-min.alt{background:#161514}
+  .s-min.alt .card{background:#201e1a;border-color:rgba(255,255,255,.1);color:#f6f5f1}
+  .s-min.alt .bar{background:rgba(255,255,255,.12)} .s-min.alt .fill{background:#f6f5f1}
+  .s-min.alt .play{background:#f6f5f1;color:#161514}
+  .s-glass.alt::before{background:radial-gradient(38% 48% at 20% 24%,#ff6a3daa,transparent 70%),radial-gradient(34% 44% at 82% 30%,#ffd23faa,transparent 70%),radial-gradient(46% 56% at 60% 88%,#ff4ecdaa,transparent 70%)}
+  .s-glass.alt .fill{background:linear-gradient(90deg,#ff8a3d,#ffd23f);box-shadow:0 0 12px #ff8a3d}
+  .s-glass.alt .play{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 22px rgba(255,138,61,.5)}
+  .s-liquid.alt{background:radial-gradient(130% 110% at 28% 0%,#ffffff,#efe6df 58%,#d9c9bd)}
+  .s-liquid.alt .fill{background:linear-gradient(90deg,#ffb15e,#ff7eb3)}
+  .s-brutal.alt{background:#15e0e0}
+  .s-brutal.alt .fill{background:#ff2e7e} .s-brutal.alt .play{background:#7c5cff}
+  .s-clay.alt{background:#d7f5e6}
+  .s-clay.alt .card{background:#62cf9b;box-shadow:0 20px 44px rgba(40,150,105,.45),inset 0 -9px 18px rgba(26,110,74,.5),inset 0 9px 18px rgba(255,255,255,.5)}
+  .s-clay.alt .play{color:#2c9e6e} .s-clay.alt .bar{background:rgba(26,110,74,.32);box-shadow:inset 0 2px 4px rgba(26,110,74,.5)}
+  .s-skeuo.alt .top::before{background:radial-gradient(circle at 35% 35%,#fff0c2,#ffb020 60%,#9a6a00);box-shadow:0 0 8px #ffb020,0 0 2px #fff}
+  .s-skeuo.alt .play{background:linear-gradient(180deg,#8fb8ff,#2d6fe0 55%,#1a4ba0);border-color:#1a3a7a}
+  .s-skeuo.alt .fill{background:linear-gradient(180deg,#ffe1a8,#e6a93f)}
+  .s-neu.alt{background:#ece5db}
+  .s-neu.alt .card{background:#ece5db;box-shadow:11px 11px 26px #cdc5b8,-11px -11px 26px #fffaf0}
+  .s-neu.alt .fill{background:linear-gradient(90deg,#caa46b,#a9824a)} .s-neu.alt .play{color:#a9824a;background:#ece5db}
+  .s-neu.alt .bar{background:#ece5db;box-shadow:inset 3px 3px 6px #cdc5b8,inset -3px -3px 6px #fffaf0}
+  .s-aurora.alt::before{background:radial-gradient(38% 46% at 22% 22%,#3ddc84,transparent 62%),radial-gradient(42% 52% at 80% 26%,#f7c531,transparent 62%),radial-gradient(48% 50% at 62% 92%,#22d3ee,transparent 62%),radial-gradient(40% 42% at 30% 82%,#16a34a,transparent 62%)}
+  .s-aurora.alt .fill{background:linear-gradient(90deg,#3ddc84,#f7c531,#22d3ee)} .s-aurora.alt .play{background:linear-gradient(135deg,#16a34a,#f7c531)}
+  .s-term.alt .card{color:#ffb000;border-color:#5a3a00;box-shadow:0 0 0 1px #140d00,0 22px 50px rgba(60,40,0,.4),inset 0 0 70px rgba(255,176,0,.05)}
+  .s-term.alt .title{color:#ffc94d;text-shadow:0 0 9px rgba(255,176,0,.5)} .s-term.alt .artist,.s-term.alt .time{color:#9a6a1f}
+  .s-term.alt .fill{background:#ffb000;box-shadow:0 0 9px #ffb000} .s-term.alt .bar{border-color:#7a5200;background:#1a1000}
+  .s-term.alt .ctl{color:#ffb000;border-color:#7a5200} .s-term.alt .play{color:#ffb000;border-color:#ffb000;box-shadow:0 0 16px rgba(255,176,0,.3),inset 0 0 16px rgba(255,176,0,.1)}
+  .s-term.alt .art{border-color:#7a5200;filter:saturate(.6) hue-rotate(-15deg) brightness(.9)}
+  .s-vapor.alt{background:linear-gradient(180deg,#08251f 0%,#13483b 52%,#2e220c 100%)}
+  .s-vapor.alt::after{background:linear-gradient(180deg,#ffae5f,#ffe24d)}
+  .s-vapor.alt .card{border-color:#00e5b0;box-shadow:0 0 30px rgba(0,229,176,.4),0 0 60px rgba(255,180,77,.18),inset 0 0 30px rgba(0,229,176,.08)}
+  .s-vapor.alt .title{text-shadow:0 0 10px #00e5b0,2px 2px 0 rgba(255,180,77,.8)} .s-vapor.alt .artist{color:#ffb24d}
+  .s-vapor.alt .fill{background:linear-gradient(90deg,#00e5b0,#ffb24d);box-shadow:0 0 10px #00e5b0} .s-vapor.alt .play{border-color:#00e5b0;box-shadow:0 0 20px rgba(0,229,176,.5)} .s-vapor.alt .prev,.s-vapor.alt .next{color:#ffb24d}
+  .s-mat.alt .bar{background:#cdeee7} .s-mat.alt .fill{background:#00897b}
+  .s-mat.alt .play{background:#00897b;box-shadow:0 3px 6px rgba(0,137,123,.4),0 9px 20px rgba(0,137,123,.28)} .s-mat.alt .prev,.s-mat.alt .next{color:#00897b}
+  .s-cyber.alt .card{border-color:#ffb000;box-shadow:0 0 30px rgba(255,176,0,.22),inset 0 0 44px rgba(255,176,0,.04)}
+  .s-cyber.alt .title{text-shadow:0 0 8px rgba(255,176,0,.55)} .s-cyber.alt .artist{color:#ff4444}
+  .s-cyber.alt .fill{background:linear-gradient(90deg,#ffb000,#ff4444);box-shadow:0 0 10px #ffb000} .s-cyber.alt .art{box-shadow:0 0 0 1px #ffb000}
+  .s-cyber.alt .bar{border-color:rgba(255,176,0,.32)} .s-cyber.alt .ctl,.s-cyber.alt .play{color:#ffb000;border-color:#ffb000} .s-cyber.alt .play{box-shadow:0 0 18px rgba(255,176,0,.4)}
+  .s-swiss.alt .artist{color:#1a48c4} .s-swiss.alt .art{background:#1a48c4} .s-swiss.alt .fill{background:#1a48c4}
+  .s-bauhaus.alt .art{background:#e2231a} .s-bauhaus.alt .fill{background:#1a48c4} .s-bauhaus.alt .play{background:#f5c518;color:#111}
+  .s-memphis.alt{background:#e6ecfb}
+  .s-memphis.alt::before{background:radial-gradient(circle at 13% 18%,#7c5cff 0 8px,transparent 9px),radial-gradient(circle at 88% 28%,#ff5d8f 0 6px,transparent 7px),radial-gradient(circle at 82% 82%,#19c3c9 0 10px,transparent 11px),radial-gradient(circle at 20% 86%,#3ddc84 0 7px,transparent 8px)}
+  .s-memphis.alt .card{box-shadow:6px 6px 0 #7c5cff} .s-memphis.alt .art{background:linear-gradient(135deg,#7c5cff,#19c3c9)} .s-memphis.alt .artist{color:#7c5cff} .s-memphis.alt .fill{background:#7c5cff} .s-memphis.alt .play{background:#19c3c9}
+  .s-y2k.alt{background:linear-gradient(165deg,#d9ffe6 0%,#8fe6a8 45%,#2fae6a 100%)}
+  .s-y2k.alt .card{background:linear-gradient(180deg,#fff,#eaffe8 50%,#cdf2d6)} .s-y2k.alt .title{color:#0b5a2e} .s-y2k.alt .artist,.s-y2k.alt .time{color:#2f9e5a}
+  .s-y2k.alt .art{background:linear-gradient(135deg,#7df0a0,#1fae5a)} .s-y2k.alt .fill{background:linear-gradient(180deg,#b6ffcf,#33c46a);box-shadow:0 0 8px rgba(80,255,150,.7)} .s-y2k.alt .play{background:linear-gradient(180deg,#8fffb0,#1fae5a 55%,#0a8040)} .s-y2k.alt .prev,.s-y2k.alt .next{color:#1f9e5a}
+  .s-edit.alt .artist{color:#b06a72} .s-edit.alt .fill{background:#a3424a} .s-edit.alt .play{border-color:#a3424a;color:#f3ece0} .s-edit.alt .prev,.s-edit.alt .next{color:#b06a72}
+  .s-max.alt .card{background:#b9ff3d;box-shadow:7px 7px 0 #ff8a00,14px 14px 0 #b026ff} .s-max.alt .art{background:linear-gradient(135deg,#ff8a00,#b026ff)}
+  .s-max.alt .fill{background:repeating-linear-gradient(45deg,#b026ff 0 6px,#111 6px 9px)} .s-max.alt .artist{color:#7a1fc4} .s-max.alt .play{background:#ff8a00}
+  .s-acid.alt .card{border-color:#ff7a00;color:#ff7a00;box-shadow:5px 5px 0 #00f0ff,-2px -2px 0 #c6ff00} .s-acid.alt .title{color:#ff7a00} .s-acid.alt .artist{color:#00c8d8}
+  .s-acid.alt .art{background:linear-gradient(135deg,#ff7a00,#00f0ff);border-color:#c6ff00} .s-acid.alt .bar{border-color:#ff7a00} .s-acid.alt .fill{background:repeating-linear-gradient(90deg,#ff7a00 0 4px,#0a0a0a 4px 6px)} .s-acid.alt .time{color:#9ac600}
+  .s-acid.alt .ctl{color:#ff7a00;border-color:#ff7a00} .s-acid.alt .play{background:#00f0ff;color:#0a0a0a;border-color:#c6ff00;box-shadow:3px 3px 0 #ff7a00}
+  .s-spatial.alt{background:radial-gradient(120% 120% at 50% 0%,#2a2018,#140d08 60%,#0a0603)}
+  .s-spatial.alt .card::before{background:radial-gradient(80% 50% at 30% 0%,rgba(255,190,120,.18),transparent 60%)} .s-spatial.alt .artist,.s-spatial.alt .time{color:#d4b89a}
+  .s-spatial.alt .fill{background:linear-gradient(90deg,#ffc98a,#fff0e0)} .s-spatial.alt .card{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 30px 60px -20px rgba(0,0,0,.8),0 60px 120px -40px rgba(160,110,40,.5)}
+
   @media(prefers-reduced-motion:reduce){
     .s-aurora::before{animation:none}
     *{scroll-behavior:auto}
+    .panel:hover,.panel:hover .art,.s-spatial:hover .art,.og-hero:hover{transform:none}
   }
 </style>
 </head>
@@ -461,7 +543,8 @@
     <div class="kick">PRISM · A DESIGN-LANGUAGE STUDY</div>
     <h1>One component.<br><em>Twenty</em> design languages.</h1>
     <p class="lead">The exact same "now&nbsp;playing" card — identical markup, identical content — rendered through twenty distinct design systems. One skeleton, twenty souls. See how far a single component can travel, and hit play on any of them.</p>
-    <div class="hero-cta"><a class="btn" href="#gallery">Explore the styles ↓</a><span class="hero-note">20 styles · live audio · pure CSS</span></div>
+    <div class="hero-cta"><a class="btn" href="#gallery">Explore the styles ↓</a><span class="hero-note">20 styles · 40 variants · live audio</span></div>
+    <a class="og-hero reveal" href="#gallery" aria-label="Jump to the gallery"><img src="https://goodman-pro.github.io/prism/assets/og.png" alt="prism — one component, twenty design languages" width="1280" height="640" loading="eager"></a>
   </header>
 
   <main>
@@ -524,8 +607,15 @@
     ['20','Spatial','depth','s-spatial']
   ];
   document.getElementById('grid').innerHTML = STYLES.map(function(s){
-    return '<div class="panel '+s[3]+' reveal"><div class="label"><b>'+s[0]+' '+s[1]+'</b> <span>· '+s[2]+'</span></div>'+CARD+'</div>';
+    return '<div class="panel '+s[3]+' reveal"><div class="label"><b>'+s[0]+' '+s[1]+'</b> <span>· '+s[2]+'</span></div><div class="vsw"><button class="on" data-v="0" aria-label="Variant A"></button><button data-v="1" aria-label="Variant B"></button></div>'+CARD+'</div>';
   }).join('');
+
+  /* ---- variants: A/B per style (recolor live, no reload) ---- */
+  document.getElementById('grid').addEventListener('click',function(e){
+    var btn=e.target.closest('.vsw button'); if(!btn)return;
+    var panel=btn.closest('.panel'); panel.classList.toggle('alt',btn.getAttribute('data-v')==='1');
+    panel.querySelectorAll('.vsw button').forEach(function(b){b.classList.toggle('on',b===btn);});
+  });
 
   /* ---- audio: real midnight-city.mp3 if present, else a synth stand-in ---- */
   var track=document.getElementById('track'), realReady=false;
@@ -607,7 +697,7 @@
     if(window.Lenis){ var lenis=new Lenis({lerp:.09,wheelMultiplier:.95}); window.__lenis=lenis;
       lenis.on('scroll',ScrollTrigger.update); gsap.ticker.add(function(t){lenis.raf(t*1000);}); gsap.ticker.lagSmoothing(0); }
     gsap.set('.reveal',{opacity:0,y:24});
-    ScrollTrigger.batch('.reveal',{start:'top 90%',once:true,onEnter:function(e){gsap.to(e,{opacity:1,y:0,duration:.7,stagger:.06,ease:'power3.out'});}});
+    ScrollTrigger.batch('.reveal',{start:'top 90%',once:true,onEnter:function(e){gsap.to(e,{opacity:1,y:0,duration:.7,stagger:.06,ease:'power3.out',clearProps:'transform'});}});
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
       a.addEventListener('click',function(e){
         var id=a.getAttribute('href'); if(!id||id==='#')return;

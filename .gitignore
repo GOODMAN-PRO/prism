@@ -12,3 +12,7 @@ Thumbs.db
 
 # committed brand assets (override the *.png rule above)
 !assets/*.png
+
+# never publish audio (copyright)
+*.mp3
+*.wav
