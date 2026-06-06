@@ -428,10 +428,14 @@
   /* ---------- hover: cards rise, the art reacts ---------- */
   .panel{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s cubic-bezier(.2,.8,.2,1)}
   .panel .art{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .s-spatial .card{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
   @media(hover:hover){
     .panel:hover{transform:translateY(-7px);box-shadow:0 36px 70px -28px rgba(0,0,0,.7);z-index:5}
     .panel:hover .art{transform:scale(1.07) rotate(-2deg)}
     .s-spatial:hover .art{transform:translateZ(30px) scale(1.06) rotate(-2deg)}
+    /* Spatial floats via a 3D tilt under the panel's perspective; transforming the panel flattens it. Keep the panel still, lift the card in 3D so it floats HIGHER on hover. */
+    .panel.s-spatial:hover{transform:none;box-shadow:none}
+    .s-spatial:hover .card{transform:rotateX(6deg) rotateY(-7deg) translateY(-12px) scale(1.02);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 50px 90px -28px rgba(0,0,0,.85),0 90px 150px -50px rgba(40,80,160,.6)}
   }
 
   /* ---------- variant switch (A / B per style) ---------- */
@@ -588,6 +592,7 @@
     .s-aurora::before{animation:none}
     *{scroll-behavior:auto}
     .panel:hover,.panel:hover .art,.s-spatial:hover .art,.og-hero:hover{transform:none}
+    .s-spatial:hover .card{transform:rotateX(6deg) rotateY(-7deg)}
     .fc{animation:none}
   }
 </style>
